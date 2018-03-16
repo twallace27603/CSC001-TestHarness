@@ -16,6 +16,7 @@ namespace DataServiceClient.Controllers
         [HttpGet]
         public async Task<IEnumerable<DemoData>> Get()
         {
+            
             return await context.GetList();
         }
 
