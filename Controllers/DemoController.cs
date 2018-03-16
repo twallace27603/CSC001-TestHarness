@@ -7,24 +7,27 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using DataServiceClient.Models;
 
-namespace DataServiceClient.Controllers
+namespace DataServiceTestClient.Controllers
 {
     public class DemoController : ApiController
     {
-        DemoDataContext context = new DemoDataContext();
-        // GET: api/Demo
-        [HttpGet]
-        public async Task<IEnumerable<DemoData>> Get()
+        public async Task<APIDemoData> Get()
         {
-            
-            return await context.GetList();
-        }
+            var context = new DemoDataContext();
+            return  new APIDemoData(await context.GetList(), System.Environment.MachineName);
 
-        // GET: api/Demo/5
-        public async Task<DemoData> Get(int id)
+        }
+    }
+    public class APIDemoData
+    {
+        public List<DemoData> Payload { get; set; }
+        public string Server { get; set; }
+        public DateTime Created { get; set; }
+        public APIDemoData(List<DemoData> payload, string server)
         {
-            return await context.GetItem(id);
+            this.Payload = payload;
+            this.Created = DateTime.Now;
+            this.Server = server;
         }
-
     }
 }
